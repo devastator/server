@@ -213,6 +213,7 @@ class Quest
         bool HasQuestFlag(QuestFlags flag) const { return (m_QuestFlags & flag) != 0; }
         bool HasSpecialFlag(QuestSpecialFlags flag) const { return (m_SpecialFlags & flag) != 0; }
         void SetSpecialFlag(QuestSpecialFlags flag) { m_SpecialFlags |= flag; }
+        bool HasItemsRequirement() const { return (ReqItemId[0] || ReqItemId[1] || ReqItemId[2] || ReqItemId[03]); }
 
         // table data accessors:
         uint32 GetQuestId() const { return QuestId; }
@@ -373,7 +374,7 @@ struct QuestStatusData
 {
     QuestStatusData()
         : m_status(QUEST_STATUS_NONE),m_rewarded(false),
-        m_explored(false), m_timer(0), uState(QUEST_NEW)
+        m_explored(false), m_timer(0), uState(QUEST_NEW), m_reward_choice(0)
     {
         memset(m_itemcount, 0, QUEST_OBJECTIVES_COUNT * sizeof(uint32));
         memset(m_creatureOrGOcount, 0, QUEST_OBJECTIVES_COUNT * sizeof(uint32));
@@ -384,6 +385,7 @@ struct QuestStatusData
     bool m_explored;
     uint32 m_timer;
     QuestUpdateState uState;
+    uint32 m_reward_choice;
 
     uint32 m_itemcount[ QUEST_OBJECTIVES_COUNT ];
     uint32 m_creatureOrGOcount[ QUEST_OBJECTIVES_COUNT ];

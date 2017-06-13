@@ -763,7 +763,7 @@ class TradeData
 
         time_t GetLastModificationTime() const { return m_lastModificationTime; }
         void SetLastModificationTime(time_t t) { m_lastModificationTime = t; }
-		
+
 		time_t GetScamPreventionDelay() const { return m_scamPreventionDelay; }
 		void SetScamPreventionDelay(time_t t) { m_scamPreventionDelay = t; }
     public:                                                 // access functions
@@ -1229,7 +1229,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
         bool SatisfyQuestPrevChain( Quest const* qInfo, bool msg ) const;
         bool CanGiveQuestSourceItemIfNeed( Quest const *pQuest, ItemPosCountVec* dest = NULL) const;
         void GiveQuestSourceItemIfNeed(Quest const *pQuest);
-        bool TakeQuestSourceItem( uint32 quest_id, bool msg );
+        bool TakeOrReplaceQuestStartItems( uint32 quest_id, bool msg, bool giveQuestStartItem );
         bool GetQuestRewardStatus( uint32 quest_id ) const;
         QuestStatus GetQuestStatus( uint32 quest_id ) const;
         void SetQuestStatus( uint32 quest_id, QuestStatus status );
@@ -1271,6 +1271,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
         uint32 GetReqKillOrCastCurrentCount(uint32 quest_id, int32 entry);
         void AreaExploredOrEventHappens( uint32 questId );
         void GroupEventHappens( uint32 questId, WorldObject const* pEventObject );
+        void GroupEventFailHappens( uint32 questId );
         void ItemAddedQuestCheck( uint32 entry, uint32 count );
         void ItemRemovedQuestCheck( uint32 entry, uint32 count );
         void KilledMonster( CreatureInfo const* cInfo, ObjectGuid guid );
@@ -1561,7 +1562,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
         ObjectGuid const& GetLootGuid() const { return m_lootGuid; }
         void SetLootGuid(ObjectGuid const& guid) { m_lootGuid = guid; }
 
-        void RemovedInsignia(Player* looterPlr);
+        void RemovedInsignia(Player* looterPlr, Corpse *corpse);
 
         WorldSession* GetSession() const { return m_session; }
         void SetSession(WorldSession *s);
@@ -1936,7 +1937,7 @@ class MANGOS_DLL_SPEC Player final: public Unit
         void SetClientControl(Unit* target, uint8 allowMove);
         void SetMover(Unit* target) { m_mover = target ? target : this; }
         Unit* GetMover() const { return m_mover; }
-        bool IsSelfMover() const { return m_mover == this; }// normal case for player not controlling other unit        
+        bool IsSelfMover() const { return m_mover == this; }// normal case for player not controlling other unit
         bool IsNextRelocationIgnored() const { return m_bNextRelocationsIgnored ? true : false; }
         void SetNextRelocationsIgnoredCount(uint32 count) { m_bNextRelocationsIgnored = count; }
         void DoIgnoreRelocation() { if (m_bNextRelocationsIgnored) --m_bNextRelocationsIgnored; }
